@@ -21,52 +21,52 @@
   };
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
-
     nixutils = {
       url = "github:pandecode/nixutils";
-      # inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nixpkgs.follows = "nixutils";
     };
 
     hermes = {
       url = "github:pandecode/hermes";
-      # inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nixpkgs.follows = "nixutils";
     };
     libys = {
       url = "github:pandecode/libys";
-      # inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nixpkgs.follows = "nixutils";
     };
 
     niri = {
       url = "github:sodiboo/niri-flake";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nixpkgs.follows = "nixutils";
     };
 
     ghostty = {
       url = "github:ghostty-org/ghostty";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nixpkgs.follows = "nixutils";
     };
 
     nix-alien = {
       url = "github:thiagokokada/nix-alien";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nixpkgs.follows = "nixutils";
     };
 
     zen-browser = {
       url = "github:0xc000022070/zen-browser-flake";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nixpkgs.follows = "nixutils";
     };
 
     zig-overlay = {
       url = "github:mitchellh/zig-overlay";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nixpkgs.follows = "nixutils";
     };
 
     boomer.url = "github:nilp0inter/boomer";
   };
 
-  outputs = {self, ...} @ inputs: {
+  outputs = inputs: let
+    self = inputs.self.inputs // inputs.nixutils.inputs;
+  in {
     nix.nixPath = ["nixpkgs=${self.inputs.nixpkgs}"];
-    packages = inputs.nixutils.lib.forAllSystems ((import ./packages.nix) (self // {}));
+    packages = self.inputs.nixutils.lib.forAllSystems ((import ./packages.nix) (self // {}));
   };
 }
