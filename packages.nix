@@ -1,5 +1,4 @@
-self: let
-  inherit (self) inputs;
+inputs: let
   inherit (inputs) nixpkgs;
 in
   system: let
