@@ -17,5 +17,4 @@ in {
   grub-custom-theme = callPackage ../derivations/grub-custom-theme.nix {};
   xdg-xmenu = callPackage ../derivations/xdg-xmenu.nix {};
   surge-downloader = callPackage ../derivations/surge-downloader.nix {};
-  helium = callPackage ../derivations/helium.nix {};
 }
