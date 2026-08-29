@@ -7,7 +7,6 @@ in
     paths = with inputs; (
       (builtins.attrValues derivations)
       ++ [
-        niri.packages.${system}.niri-unstable
         zig-overlay.packages.${system}.master
       ]
       ++ (map (
