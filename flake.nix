@@ -20,7 +20,7 @@
     ];
   };
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
+    nixpkgs.url = "https://channels.nixos.org/nixos-unstable/nixexprs.tar.zst";
     nixutils = {
       url = "github:pandecode/nixutils";
       inputs.nixpkgs.follows = "nixpkgs";
