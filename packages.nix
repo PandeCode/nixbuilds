@@ -17,7 +17,6 @@ in
           hermes
           libys
           boomer
-          ghostty
           # inputs.zen-browser.packages."${system}".twilight
         ])
     );
