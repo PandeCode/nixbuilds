@@ -102,11 +102,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1789489641,
-        "narHash": "sha256-XDmwDv58y5T8AeTbIMccfQvvXlAjTXALnug6js6Ctl8=",
+        "lastModified": 1790453137,
+        "narHash": "sha256-v69nNCWxaAJD0KcniAa2c7P3g3u5yWtUwcpl/U8ogbA=",
         "owner": "PandeCode",
         "repo": "nixutils",
-        "rev": "fdbbe6a1edd15bdecb1c9db3fb5977f23932363e",
+        "rev": "0046e91777225216b8d451dd3591a84507632a8b",
         "type": "github"
       },
       "original": {
