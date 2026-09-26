@@ -28,7 +28,7 @@ stdenvNoCC.mkDerivation {
     find $out/share/plymouth/themes/ -name \*.plymouth -exec sed -i "s@\/usr\/@$out\/@" {} \;
   '';
 
-  passthru.updateScript = unstableGitUpdater {};
+  passthru.updateScript = unstableGitUpdater { };
   meta = {
     description = "Honkai: Star Rail's Simulated Universe loading screen for your (Linux) computer";
     homepage = "https://github.com/ohaiibuzzle/Plymouth-SimulatedUniverse/";

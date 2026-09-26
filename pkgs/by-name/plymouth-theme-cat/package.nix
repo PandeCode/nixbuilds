@@ -27,13 +27,13 @@ stdenvNoCC.mkDerivation {
     find $out/share/plymouth/themes/PlymouthTheme-Cat -name \*.plymouth -exec sed -i "s@\/usr\/@$out\/@" {} \;
   '';
 
-  passthru.updateScript = unstableGitUpdater {};
+  passthru.updateScript = unstableGitUpdater { };
 
   meta = {
     description = "This is a Plymouth theme created that can be used in Linux Distributions";
     homepage = "https://github.com/krishnan793/PlymouthTheme-Cat";
     license = lib.licenses.gpl3Only;
-    maintainers = with lib.maintainers; [];
+    maintainers = with lib.maintainers; [ ];
     platforms = lib.platforms.all;
   };
 }

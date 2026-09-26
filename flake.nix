@@ -1,59 +1,60 @@
 {
-  description = "project templates";
+  description = "personal nixpkgs";
 
+  # lets people who use these packages download them instead of building
   nixConfig = {
-    trusted-users = ["root" "shawn"];
-    experimental-features = ["nix-command" "flakes" "pipe-operators"];
-    accept-flake-config = true;
-    show-trace = true;
-    auto-optimise-store = true;
-
-    # substituters = ["https://aseipp-nix-cache.freetls.fastly.net"];
-
-    extra-substituters = [
-      "https://charon.cachix.org"
-      "https://nix-community.cachix.org"
-    ];
+    extra-substituters = [ "https://charon.cachix.org" ];
     extra-trusted-public-keys = [
       "charon.cachix.org-1:epdetEs1ll8oi8DT8OG2jEA4whj3FDbqgPFvapEPbY8="
-      "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
     ];
   };
+
+  outputs = inputs: import ./flake inputs;
+
   inputs = {
+    # the nixpkgs pin for all my repos, they follow this one
     nixpkgs.url = "https://channels.nixos.org/nixos-unstable/nixexprs.tar.zst";
+
+    # my lib and the shared formatter config
     nixutils = {
-      url = "github:pandecode/nixutils";
+      type = "github";
+      owner = "PandeCode";
+      repo = "nixutils";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    hermes = {
-      url = "github:pandecode/hermes";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    libys = {
-      url = "github:pandecode/libys";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
+    ### packages from other flakes, built against this nixpkgs and cached
+    # run binaries that are not patched for nixos
     nix-alien = {
-      url = "github:thiagokokada/nix-alien";
-      inputs.nixpkgs.follows = "nixpkgs";
+      type = "github";
+      owner = "thiagokokada";
+      repo = "nix-alien";
+
+      # its nix-index-database already follows its nixpkgs
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        flake-compat.follows = "";
+      };
     };
 
-    zen-browser = {
-      url = "github:0xc000022070/zen-browser-flake";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
+    # zig built from master
     zig-overlay = {
-      url = "github:mitchellh/zig-overlay";
-      inputs.nixpkgs.follows = "nixpkgs";
+      type = "github";
+      owner = "mitchellh";
+      repo = "zig-overlay";
+
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        flake-compat.follows = "";
+      };
     };
 
-    boomer.url = "github:nilp0inter/boomer";
-  };
-
-  outputs = {self, ...} @ inputs: {
-    packages = inputs.nixutils.lib.forAllSystems ((import ./packages.nix) (inputs // {inherit (inputs.nixutils.inputs) nixpkgs;}));
+    # zoomer for x11
+    boomer = {
+      type = "github";
+      owner = "nilp0inter";
+      repo = "boomer";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 }

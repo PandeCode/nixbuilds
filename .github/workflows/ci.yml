@@ -33,8 +33,8 @@ jobs:
           name: charon
           authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
 
-      - name: Build flake output
-        run: nix build --accept-flake-config --keep-going
+      - name: Build packages and checks
+        run: nix flake check --keep-going
 
       - name: Check devShell
-        run: nix develop --accept-flake-config --keep-going  --command echo OK
+        run: nix develop --command echo OK
