@@ -1,75 +1,52 @@
 {
-  pkgs,
+  lib,
   stdenvNoCC,
   fetchFromGitHub,
-  lib,
+  imagemagick,
   unstableGitUpdater,
-  config ? {
-    background = null;
-    main = null;
-    secondary = null;
-  },
+  # any of background, main, secondary, as uppercase "#RRGGBB"
+  colors ? { },
 }:
-stdenvNoCC.mkDerivation rec {
+
+let
+  recolor = lib.attrsets.mapAttrsToList (
+    part: color: "bash change-color.sh ${part} ${lib.strings.escapeShellArg color}"
+  ) colors;
+in
+
+stdenvNoCC.mkDerivation (finalAttrs: {
   pname = "plymouth-theme-chain";
   version = "1.0.0";
 
   src = fetchFromGitHub {
     owner = "Hugopikachu";
     repo = "plymouth-theme-chain";
-    rev = "v${version}";
+    rev = "v${finalAttrs.version}";
     hash = "sha256-qvCzYK5Ti/YH7c6rg0AJS/C/efe4cERLY9tS+WFmluM=";
   };
 
-  meta = {
-    description = "";
-    homepage = "https://github.com/Hugopikachu/plymouth-theme-chain/";
-    license = lib.licenses.mit;
-    maintainers = with lib.maintainers; [];
-    mainProgram = "plymouth-theme-chain";
-    platforms = lib.platforms.all;
-  };
-  postPatch = ''
-    # Remove not needed files
-    rm -fr README.md LICENSE preview
-  '';
+  nativeBuildInputs = lib.lists.optional (colors != { }) imagemagick;
+
   dontBuild = true;
 
-  nativeBuildInputs = with pkgs;
-    if
-      (
-        !(builtins.isNull config.background)
-        || !(builtins.isNull config.main)
-        || !(builtins.isNull config.secondary)
-      )
-    then [
-      imagemagick
-    ]
-    else [];
+  installPhase = ''
+    runHook preInstall
 
-  installPhase =
-    "chmod +x change-color.sh\n"
-    + (
-      if builtins.isNull config.background
-      then ""
-      else "./change-color.sh background ${config.background}\n"
-    )
-    + (
-      if builtins.isNull config.main
-      then ""
-      else "./change-color.sh main ${config.main}\n"
-    )
-    + (
-      if builtins.isNull config.secondary
-      then ""
-      else "./change-color.sh secondary ${config.secondary}\n"
-    )
-    + #bash
-    ''
-      sed -i "s@\/usr\/@$out\/@" chain.plymouth
-      mkdir -p $out/share/plymouth/themes/chain
-      cp -r ./* $out/share/plymouth/themes/chain
-    '';
+    ${lib.strings.concatLines recolor}
+    rm -fr README.md LICENSE preview change-color.sh
+    sed -i "s@\/usr\/@$out\/@" chain.plymouth
+    mkdir -p $out/share/plymouth/themes/chain
+    cp -r ./* $out/share/plymouth/themes/chain
 
-  passthru.updateScript = unstableGitUpdater {};
-}
+    runHook postInstall
+  '';
+
+  passthru.updateScript = unstableGitUpdater { };
+
+  meta = {
+    description = "Plymouth boot theme with a chain animation";
+    homepage = "https://github.com/Hugopikachu/plymouth-theme-chain";
+    license = lib.licenses.mit;
+    platforms = lib.platforms.linux;
+  };
+})

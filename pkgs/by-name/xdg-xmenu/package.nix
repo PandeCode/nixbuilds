@@ -6,7 +6,7 @@
 stdenv.mkDerivation {
   pname = "xdg-xmenu";
   version = "v1.0.0-beta.2";
-  buildInputs = [inih];
+  buildInputs = [ inih ];
   src = fetchFromGitHub {
     owner = "xlucn";
     repo = "xdg-xmenu";

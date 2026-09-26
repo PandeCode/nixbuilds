@@ -1,21 +1,23 @@
 {
-  pkgs,
   stdenvNoCC,
-  video ?
-    builtins.fetchurl {
-      url = "https://github.com/PandeCode/dotnix/raw/refs/heads/media/sddm/chainsaw.mp4";
-      sha256 = "1qnb4vjsckd6qvcaimhcsz5j2n32zcr199adyw1509ka70rchx0z";
-    },
-  placeholder ?
-    builtins.fetchurl {
-      url = "https://github.com/PandeCode/dotnix/raw/refs/heads/media/sddm/chainsaw.png";
-      sha256 = "19p7xngs2gv9yjrdbl755kb1sf3v1n9pa3yrjd4nhj806kksqbfi";
-    },
+  fetchFromGitHub,
+  fetchurl,
+  kdePackages,
+  video ? fetchurl {
+    url = "https://github.com/PandeCode/nixutils/raw/refs/heads/media/sddm/factorio.mp4";
+    sha256 = "0hrj4x8q068ih398gcjsr7ai6qb7mlj8mbdgcdqjcm98pjbchvaj";
+  },
+  placeholder ? fetchurl {
+    url = "https://github.com/PandeCode/nixutils/raw/refs/heads/media/sddm/factorio.png";
+    sha256 = "0g6ph1zqfrqqclswd5xnczdj0rkw26sn168f3260kcd43cx7100b";
+  },
 }:
+
 stdenvNoCC.mkDerivation {
   pname = "sddm-custom-theme";
   version = "1.0.0";
-  src = pkgs.fetchFromGitHub {
+
+  src = fetchFromGitHub {
     owner = "pandecode";
     repo = "sddm-custom-theme";
     rev = "fb1bbdb15b10b065a14058ef2513b286ffb14e2d";
@@ -24,21 +26,23 @@ stdenvNoCC.mkDerivation {
 
   dontWrapQtApps = true;
 
-  propagatedBuildInputs = with pkgs.kdePackages; [
+  propagatedBuildInputs = with kdePackages; [
     qtsvg
     qtmultimedia
     qtvirtualkeyboard
   ];
 
-  installPhase = let
-    basePath = "$out/share/sddm/themes/sddm-custom-theme";
-  in ''
-    mkdir -p ${basePath}
-    mkdir -p ${basePath}/Backgrounds
+  installPhase =
+    let
+      basePath = "$out/share/sddm/themes/sddm-custom-theme";
+    in
+    ''
+      mkdir -p ${basePath}
+      mkdir -p ${basePath}/Backgrounds
 
-    cp -r $src/* ${basePath}
+      cp -r $src/* ${basePath}
 
-    cp -f ${video} ${basePath}/Backgrounds/custom.mp4
-    cp -f ${placeholder} ${basePath}/Backgrounds/custom.png
-  '';
+      cp -f ${video} ${basePath}/Backgrounds/custom.mp4
+      cp -f ${placeholder} ${basePath}/Backgrounds/custom.png
+    '';
 }

@@ -50,6 +50,6 @@ python3.pkgs.buildPythonApplication rec {
     description = "Script and module for sending desktop notifications";
     homepage = "https://pypi.org/project/notify-send.py/";
     license = licenses.bsd2;
-    mainProgram = "notify-send-py";
+    mainProgram = "notify-send.py";
   };
 }
