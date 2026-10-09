@@ -16,8 +16,8 @@ for pkg in helium hyperfluent-grub-theme plymouth-theme-chain; do
     run "$pkg" nix-update --flake "$pkg"
 done
 
-# no releases, so the newest commit
-for pkg in plymouth-simulated-universe plymouth-theme-cat rill; do
+# no releases, or fixes land between tags, so the newest commit
+for pkg in plymouth-simulated-universe plymouth-theme-cat raddebugger rill; do
     run "$pkg" nix-update --flake --version=branch "$pkg"
 done
 
