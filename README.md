@@ -37,6 +37,18 @@ nix-init pkgs/by-name/<name>/package.nix
 nix build .#<name>
 ```
 
+## Update
+
+`pkgs/update.sh` bumps every package that can find its own new version. A
+workflow runs it with `nix flake update` every saturday, builds the result and
+opens a pr. Run it by hand with:
+
+```bash
+nix develop --command pkgs/update.sh
+```
+
+A new package that should update itself gets a line in that script.
+
 ## Develop
 
 ```bash

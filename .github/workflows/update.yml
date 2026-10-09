@@ -1,0 +1,68 @@
+name: "Update"
+
+# every saturday: newer inputs and packages, built and cached, then a pr to
+# merge. nothing reaches main without the merge
+on:
+  schedule:
+    - cron: "0 6 * * 6"
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Install Nix
+        uses: cachix/install-nix-action@13d8dd58da0234aa297dedd986986ccb8e7f3e24 # v31.11.1
+        with:
+          extra_nix_config: |
+            experimental-features = nix-command flakes
+
+      - name: Setup Cachix
+        uses: cachix/cachix-action@38b082610b782e7e93e209c35fd730d399dee866 # v17
+        with:
+          name: charon
+          authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
+
+      - name: Update inputs
+        run: nix flake update 2>&1 | tee -a "$RUNNER_TEMP/log"
+
+      # a package that can't update is listed in the pr, not a failed run
+      - name: Update packages
+        run: nix develop --command pkgs/update.sh 2>&1 | tee -a "$RUNNER_TEMP/log" || true
+        env:
+          # nix-update asks github for releases; this keeps it under the limit
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # the pr's own checks don't run for a pr made here, so build first
+      - name: Build packages and checks
+        run: nix flake check --keep-going
+
+      - name: Describe
+        run: |
+          {
+            echo '```'
+            grep -E "Updated input|^ .*' \([0-9-]+\)$|^Update |: .* -> |^failed:" "$RUNNER_TEMP/log" || true
+            echo '```'
+          } >"$RUNNER_TEMP/body.md"
+
+      - name: Open pr
+        uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1 # v8.1.1
+        with:
+          branch: update
+          delete-branch: true
+          # pandebot's token, so the pr is its own and runs its checks;
+          # github's own token until that secret is set
+          token: ${{ secrets.BOT_TOKEN || github.token }}
+          author: pandebot <339883775+pandebot@users.noreply.github.com>
+          committer: pandebot <339883775+pandebot@users.noreply.github.com>
+          commit-message: "chore: update"
+          title: "chore: update"
+          body-path: ${{ runner.temp }}/body.md

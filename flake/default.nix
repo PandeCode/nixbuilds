@@ -56,6 +56,9 @@ in
   devShells = forAllPkgs (pkgs: {
     default = pkgs.mkShellNoCC {
       packages = [
+        # for pkgs/update.sh
+        pkgs.curl
+        pkgs.jq
         pkgs.nix-init
         pkgs.nix-update
         self.formatter.${pkgs.stdenv.hostPlatform.system}
