@@ -6,7 +6,7 @@
 }:
 stdenvNoCC.mkDerivation {
   pname = "plymouth-simulated-universe";
-  version = "unstable-2023-08-17";
+  version = "0-unstable-2023-08-17";
 
   src = fetchFromGitHub {
     owner = "ohaiibuzzle";

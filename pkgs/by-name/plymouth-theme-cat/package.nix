@@ -6,7 +6,7 @@
 }:
 stdenvNoCC.mkDerivation {
   pname = "plymouth-theme-cat";
-  version = "unstable-2025-01-09";
+  version = "0-unstable-2025-01-09";
 
   src = fetchFromGitHub {
     owner = "krishnan793";
