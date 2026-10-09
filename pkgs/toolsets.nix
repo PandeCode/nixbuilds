@@ -98,10 +98,11 @@ let
       vscode-langservers-extracted
     ];
 
-    zig = [
-      zig
-      zls
-    ];
+    # conflicts with zig 17
+    # zig = [
+    #   zig
+    #   zls
+    # ];
     # keep-sorted end
   };
 
