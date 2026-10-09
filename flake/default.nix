@@ -61,6 +61,7 @@ in
         pkgs.jq
         pkgs.nix-init
         pkgs.nix-update
+        pkgs.unzip
         self.formatter.${pkgs.stdenv.hostPlatform.system}
       ];
     };

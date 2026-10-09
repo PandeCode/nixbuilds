@@ -49,6 +49,10 @@ nix develop --command pkgs/update.sh
 
 A new package that should update itself gets a line in that script.
 
+Chromium extensions live in `pkgs/by-name/chromium-extensions/extensions.nix`.
+Add one with its name and store id and any version and hash; the next update
+fills those in.
+
 ## Develop
 
 ```bash
