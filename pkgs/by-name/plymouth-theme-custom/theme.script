@@ -1,0 +1,137 @@
+# package.nix prepends: fps, frames[], background_* and text_*
+
+Window.SetBackgroundTopColor(background_red, background_green, background_blue);
+Window.SetBackgroundBottomColor(background_red, background_green, background_blue);
+
+mode = Plymouth.GetMode();
+if (!frames[mode + "-loop"])
+  mode = "boot";
+
+fun load(part) {
+  for (i = 0; i < frames[mode + "-" + part]; i++)
+    images[i] = Image(mode + "-" + part + "-" + i + ".png");
+  return images;
+}
+
+intro = load("intro");
+intro_count = frames[mode + "-intro"];
+if (!intro_count)
+  intro_count = 0;
+loop = load("loop");
+loop_count = frames[mode + "-loop"];
+
+sprite = Sprite();
+tick = 0;
+
+# plymouth calls this 50 times a second
+fun refresh_callback() {
+  frame = Math.Int(tick * fps / 50);
+  if (frame < intro_count)
+    image = intro[frame];
+  else
+    image = loop[(frame - intro_count) % loop_count];
+  sprite.SetImage(image);
+  sprite.SetX(Window.GetX() + Window.GetWidth() / 2 - image.GetWidth() / 2);
+  sprite.SetY(Window.GetY() + Window.GetHeight() / 2 - image.GetHeight() / 2);
+  tick++;
+}
+
+Plymouth.SetRefreshFunction(refresh_callback);
+
+# password prompt, below the animation so it stays visible
+
+fun dialog_setup() {
+  box.image = Image("box.png");
+  box.x = Window.GetX() + Window.GetWidth() / 2 - box.image.GetWidth() / 2;
+  box.y = Window.GetY() + Window.GetHeight() * 0.8 - box.image.GetHeight() / 2;
+  box.sprite = Sprite(box.image);
+  box.sprite.SetPosition(box.x, box.y, 10000);
+
+  lock.image = Image("lock.png");
+  entry.image = Image("entry.png");
+
+  lock.x = box.x + box.image.GetWidth() / 2 - (lock.image.GetWidth() + entry.image.GetWidth()) / 2;
+  lock.y = box.y + box.image.GetHeight() / 2 - lock.image.GetHeight() / 2;
+  lock.sprite = Sprite(lock.image);
+  lock.sprite.SetPosition(lock.x, lock.y, 10001);
+
+  entry.x = lock.x + lock.image.GetWidth();
+  entry.y = box.y + box.image.GetHeight() / 2 - entry.image.GetHeight() / 2;
+  entry.sprite = Sprite(entry.image);
+  entry.sprite.SetPosition(entry.x, entry.y, 10001);
+
+  prompt.sprite = Sprite();
+
+  global.dialog.box = box;
+  global.dialog.lock = lock;
+  global.dialog.entry = entry;
+  global.dialog.prompt = prompt;
+  global.dialog.bullet_image = Image("bullet.png");
+}
+
+fun dialog_opacity(opacity) {
+  dialog.box.sprite.SetOpacity(opacity);
+  dialog.lock.sprite.SetOpacity(opacity);
+  dialog.entry.sprite.SetOpacity(opacity);
+  dialog.prompt.sprite.SetOpacity(opacity);
+  for (i = 0; dialog.bullet[i]; i++)
+    dialog.bullet[i].sprite.SetOpacity(opacity);
+}
+
+fun display_normal_callback() {
+  if (global.dialog)
+    dialog_opacity(0);
+}
+
+fun display_password_callback(text, bullets) {
+  if (!global.dialog)
+    dialog_setup();
+  dialog_opacity(1);
+
+  image = Image.Text(text, text_red, text_green, text_blue);
+  dialog.prompt.sprite.SetImage(image);
+  dialog.prompt.sprite.SetPosition(
+    Window.GetX() + Window.GetWidth() / 2 - image.GetWidth() / 2,
+    dialog.box.y - image.GetHeight() * 2,
+    10001);
+
+  # bullets past the end of the entry are hidden, they would spill out of the box
+  width = dialog.bullet_image.GetWidth();
+  fits = Math.Int(dialog.entry.image.GetWidth() / width);
+  for (i = 0; dialog.bullet[i] || i < bullets; i++) {
+    if (!dialog.bullet[i]) {
+      dialog.bullet[i].sprite = Sprite(dialog.bullet_image);
+      dialog.bullet[i].sprite.SetPosition(
+        dialog.entry.x + i * width,
+        dialog.entry.y + dialog.entry.image.GetHeight() / 2 - dialog.bullet_image.GetHeight() / 2,
+        10002);
+    }
+    if (i < bullets && i < fits)
+      dialog.bullet[i].sprite.SetOpacity(1);
+    else
+      dialog.bullet[i].sprite.SetOpacity(0);
+  }
+}
+
+Plymouth.SetDisplayNormalFunction(display_normal_callback);
+Plymouth.SetDisplayPasswordFunction(display_password_callback);
+
+# messages from plymouth display-message, e.g. failed units
+
+message.sprite = Sprite();
+message.sprite.SetZ(10000);
+
+fun display_message_callback(text) {
+  image = Image.Text(text, text_red, text_green, text_blue);
+  message.sprite.SetImage(image);
+  message.sprite.SetX(Window.GetX() + Window.GetWidth() / 2 - image.GetWidth() / 2);
+  message.sprite.SetY(Window.GetY() + Window.GetHeight() - image.GetHeight() * 3);
+  message.sprite.SetOpacity(1);
+}
+
+fun hide_message_callback(text) {
+  message.sprite.SetOpacity(0);
+}
+
+Plymouth.SetDisplayMessageFunction(display_message_callback);
+Plymouth.SetHideMessageFunction(hide_message_callback);
