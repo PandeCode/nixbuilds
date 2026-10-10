@@ -14,6 +14,14 @@
   fps ? 25,
   # scale frames to this width, every frame ends up in the initrd
   width ? null,
+  # how frames fill the screen: none, contain, cover or stretch
+  fit ? "none",
+  # where the animation and the password box sit, x and y from 0 (left,
+  # top) to 1 (right, bottom)
+  position ? { },
+  promptPosition ? { },
+  # images for the password prompt: box, lock, entry, bullet
+  promptImages ? { },
   background ? "#161616",
   text ? "#ffffff",
 }:
@@ -29,13 +37,48 @@ let
     "system-reset"
   ];
 
-  # the password prompt images and the default animation come from the cat
+  fits = [
+    "none"
+    "contain"
+    "cover"
+    "stretch"
+  ];
+
+  # the default password prompt images and animation come from the cat
   catDir = "${plymouth-theme-cat}/share/plymouth/themes/PlymouthTheme-Cat";
 
   cat = runCommandLocal "plymouth-cat-frames" { } ''
     mkdir $out
     cp ${catDir}/progress-*.png $out
   '';
+
+  prompt =
+    lib.genAttrs [ "box" "lock" "entry" "bullet" ] (part: "${catDir}/${part}.png") // promptImages;
+
+  pos = {
+    x = 0.5;
+    y = 0.5;
+  }
+  // position;
+  promptPos = {
+    x = 0.5;
+    y = 0.8;
+  }
+  // promptPosition;
+  isPos =
+    p:
+    lib.attrNames p == [
+      "x"
+      "y"
+    ]
+    && lib.lists.all (v: lib.isFloat v || lib.isInt v) [
+      p.x
+      p.y
+    ]
+    && p.x >= 0
+    && p.x <= 1
+    && p.y >= 0
+    && p.y <= 1;
 
   anims = if animations == null then { boot = cat; } else animations;
 
@@ -92,6 +135,19 @@ assert lib.assertMsg (lib.lists.all (m: lib.lists.elem m modes) (lib.attrNames a
 assert lib.assertMsg (lib.lists.all validParts (
   lib.attrValues anims
 )) "plymouth-theme-custom: an animation set needs loop and may only have intro";
+assert lib.assertMsg (lib.lists.elem fit fits)
+  "plymouth-theme-custom: fit must be one of ${lib.strings.concatStringsSep ", " fits}, got ${fit}";
+assert lib.assertMsg (
+  isPos pos && isPos promptPos
+) "plymouth-theme-custom: position and promptPosition take x and y between 0 and 1";
+assert lib.assertMsg (
+  lib.attrNames prompt == [
+    "box"
+    "bullet"
+    "entry"
+    "lock"
+  ]
+) "plymouth-theme-custom: promptImages may only set box, lock, entry and bullet";
 assert lib.assertMsg (
   isColor background && isColor text
 ) "plymouth-theme-custom: colors must be #rrggbb, got background ${background} and text ${text}";
@@ -114,7 +170,12 @@ stdenvNoCC.mkDerivation {
       runHook preInstall
 
       mkdir -p ${themeDir}
-      cp ${catDir}/{box,bullet,entry,lock}.png ${themeDir}
+      ${lib.strings.concatLines (
+        lib.attrsets.mapAttrsToList (
+          part: file:
+          "ffmpeg -nostdin -loglevel error -i ${lib.strings.escapeShellArg "${file}"} ${themeDir}/${part}.png"
+        ) prompt
+      )}
 
       frames() {
         if [ -d "$1" ]; then
@@ -139,6 +200,11 @@ stdenvNoCC.mkDerivation {
 
       cat header - ${./theme.script} > ${themeDir}/${name}.script <<'EOF'
       ${rgb "background" background}${rgb "text" text}
+      fit = "${fit}";
+      position_x = ${toString pos.x};
+      position_y = ${toString pos.y};
+      prompt_x = ${toString promptPos.x};
+      prompt_y = ${toString promptPos.y};
       EOF
 
       cat > ${themeDir}/${name}.plymouth <<EOF

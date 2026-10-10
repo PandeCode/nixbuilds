@@ -1,4 +1,5 @@
-# package.nix prepends: fps, frames[], background_* and text_*
+# package.nix prepends: fps, frames[], background_*, text_*, fit, position_*
+# and prompt_*
 
 Window.SetBackgroundTopColor(background_red, background_green, background_blue);
 Window.SetBackgroundBottomColor(background_red, background_green, background_blue);
@@ -7,9 +8,29 @@ mode = Plymouth.GetMode();
 if (!frames[mode + "-loop"])
   mode = "boot";
 
+fun fitted(image) {
+  if (fit == "none")
+    return image;
+  if (fit == "stretch")
+    return image.Scale(Window.GetWidth(), Window.GetHeight());
+
+  sx = Window.GetWidth() / image.GetWidth();
+  sy = Window.GetHeight() / image.GetHeight();
+  if (fit == "contain")
+    return image.Scale(Math.Int(image.GetWidth() * Math.Min(sx, sy)), Math.Int(image.GetHeight() * Math.Min(sx, sy)));
+
+  # cover: fill the screen, position picks which part of the overflow is kept
+  scaled = image.Scale(Math.Int(image.GetWidth() * Math.Max(sx, sy)), Math.Int(image.GetHeight() * Math.Max(sx, sy)));
+  return scaled.Crop(
+    Math.Int((scaled.GetWidth() - Window.GetWidth()) * position_x),
+    Math.Int((scaled.GetHeight() - Window.GetHeight()) * position_y),
+    Window.GetWidth(),
+    Window.GetHeight());
+}
+
 fun load(part) {
   for (i = 0; i < frames[mode + "-" + part]; i++)
-    images[i] = Image(mode + "-" + part + "-" + i + ".png");
+    images[i] = fitted(Image(mode + "-" + part + "-" + i + ".png"));
   return images;
 }
 
@@ -31,19 +52,19 @@ fun refresh_callback() {
   else
     image = loop[(frame - intro_count) % loop_count];
   sprite.SetImage(image);
-  sprite.SetX(Window.GetX() + Window.GetWidth() / 2 - image.GetWidth() / 2);
-  sprite.SetY(Window.GetY() + Window.GetHeight() / 2 - image.GetHeight() / 2);
+  sprite.SetX(Window.GetX() + (Window.GetWidth() - image.GetWidth()) * position_x);
+  sprite.SetY(Window.GetY() + (Window.GetHeight() - image.GetHeight()) * position_y);
   tick++;
 }
 
 Plymouth.SetRefreshFunction(refresh_callback);
 
-# password prompt, below the animation so it stays visible
+# password prompt, below the animation by default so it stays visible
 
 fun dialog_setup() {
   box.image = Image("box.png");
-  box.x = Window.GetX() + Window.GetWidth() / 2 - box.image.GetWidth() / 2;
-  box.y = Window.GetY() + Window.GetHeight() * 0.8 - box.image.GetHeight() / 2;
+  box.x = Window.GetX() + (Window.GetWidth() - box.image.GetWidth()) * prompt_x;
+  box.y = Window.GetY() + (Window.GetHeight() - box.image.GetHeight()) * prompt_y;
   box.sprite = Sprite(box.image);
   box.sprite.SetPosition(box.x, box.y, 10000);
 
@@ -91,7 +112,7 @@ fun display_password_callback(text, bullets) {
   image = Image.Text(text, text_red, text_green, text_blue);
   dialog.prompt.sprite.SetImage(image);
   dialog.prompt.sprite.SetPosition(
-    Window.GetX() + Window.GetWidth() / 2 - image.GetWidth() / 2,
+    dialog.box.x + dialog.box.image.GetWidth() / 2 - image.GetWidth() / 2,
     dialog.box.y - image.GetHeight() * 2,
     10001);
 
