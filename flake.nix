@@ -49,14 +49,6 @@
       };
     };
 
-    # zoomer for x11
-    boomer = {
-      type = "github";
-      owner = "nilp0inter";
-      repo = "boomer";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     # factory game main menu login screen
     sddm-foundry-theme = {
       type = "github";
