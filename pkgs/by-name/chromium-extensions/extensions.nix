@@ -51,8 +51,8 @@
 
   "privacy-badger" = {
     id = "pkehgijcmpdhfbdbbnkijodmdjhbjlgp";
-    version = "2026.9.15.1";
-    hash = "sha256-llMAZOfeQ+SHuWJJrlzI42cmSKtmYN99nOI5yAd9l9w=";
+    version = "2026.9.15.2";
+    hash = "sha256-i5kDvCPBO3hhWQEWOQFCoM0JsqMvz3Nkq0yVACQWaac=";
   };
 
   "readeck" = {
@@ -75,8 +75,8 @@
 
   "ublock-origin" = {
     id = "hifpfkolgdolnmfmncmfocfiiaofjikk";
-    version = "1.72.2";
-    hash = "sha256-0QTKxOH0jXaxw/+Irt4uqoJpgUrgbMnIUNJ6+1J05TM=";
+    version = "1.75.0";
+    hash = "sha256-OTz5VwnRB01AIpcOkBTkNDlcU6giOH8eJfQ76Xz0tYI=";
     github = "gorhill/uBlock";
     asset = "uBlock0_@version@.chromium.zip";
   };
