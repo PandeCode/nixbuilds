@@ -56,5 +56,17 @@
       repo = "boomer";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    # factory game main menu login screen
+    sddm-foundry-theme = {
+      type = "github";
+      owner = "PandeCode";
+      repo = "sddm-foundry-theme";
+
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        nixutils.follows = "nixutils";
+      };
+    };
   };
 }

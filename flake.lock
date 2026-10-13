@@ -121,7 +121,31 @@
         "nix-alien": "nix-alien",
         "nixpkgs": "nixpkgs",
         "nixutils": "nixutils",
+        "sddm-foundry-theme": "sddm-foundry-theme",
         "zig-overlay": "zig-overlay"
+      }
+    },
+    "sddm-foundry-theme": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "nixutils": [
+          "nixutils"
+        ]
+      },
+      "locked": {
+        "lastModified": 1791861328,
+        "narHash": "sha256-Y1E71gON9K9ajWswZFgfAD1VJygQMtFNK1wal7J6/xw=",
+        "owner": "PandeCode",
+        "repo": "sddm-foundry-theme",
+        "rev": "a19a701d2b2cf9089b42531cbc5a29aa6583da99",
+        "type": "github"
+      },
+      "original": {
+        "owner": "PandeCode",
+        "repo": "sddm-foundry-theme",
+        "type": "github"
       }
     },
     "systems": {
