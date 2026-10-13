@@ -10,7 +10,7 @@
 stdenv.mkDerivation (finalAttrs: {
   pname = "excalidraw";
   # the app has no releases; excalidraw.com runs the newest commit
-  version = "0-unstable-2026-10-12";
+  version = "0.18.1-unstable-2026-10-12";
 
   src = fetchFromGitHub {
     owner = "excalidraw";
