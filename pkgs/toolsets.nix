@@ -56,6 +56,11 @@ let
       gotools
     ];
 
+    janet = [
+      janet
+      janet-lsp
+    ];
+
     lua = [
       emmylua-check
       emmylua-doc-cli
@@ -111,6 +116,7 @@ let
     [
       base
       fennel
+      janet
       lua
       nix
       shell
