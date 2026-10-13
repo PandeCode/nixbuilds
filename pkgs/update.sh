@@ -8,7 +8,13 @@ cd "$(dirname "$0")/.." || exit
 failed=()
 run() {
     echo "== $1"
-    "${@:2}" || failed+=("$1")
+    local before
+    before=$(git diff --name-only -- pkgs)
+    if ! "${@:2}"; then
+        failed+=("$1")
+        # whatever it changed before failing goes back, so the rest still merge
+        comm -13 <(echo "$before") <(git diff --name-only -- pkgs) | xargs -r git checkout --
+    fi
 }
 
 # releases on github
@@ -44,7 +50,7 @@ run betterbird betterbird
 chromium_extensions() {
     local file=pkgs/by-name/chromium-extensions/extensions.nix
     local chrome json name e id repo version url out hash old bad=0
-    chrome=$(nix eval --raw .#legacyPackages.x86_64-linux.ungoogled-chromium.version) || return 1
+    chrome=$(nix eval --raw --inputs-from . nixpkgs#ungoogled-chromium.version) || return 1
     json=$(nix eval --json --file "$file") || return 1
     for name in $(jq -r 'keys[]' <<<"$json"); do
         e=$(jq -c --arg n "$name" '.[$n]' <<<"$json")

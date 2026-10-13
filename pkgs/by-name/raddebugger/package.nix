@@ -5,10 +5,10 @@
   fetchFromGitHub,
   freetype,
   libGL,
-  libX11,
-  libXext,
-  libXfixes,
-  libXrandr,
+  libx11,
+  libxext,
+  libxfixes,
+  libxrandr,
   makeDesktopItem,
   pkg-config,
 }:
@@ -35,10 +35,10 @@ clangStdenv.mkDerivation {
   buildInputs = [
     freetype
     libGL
-    libX11
-    libXext
-    libXfixes
-    libXrandr
+    libx11
+    libxext
+    libxfixes
+    libxrandr
   ];
 
   buildPhase = ''
