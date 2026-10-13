@@ -41,12 +41,18 @@ let
   isVideo = lib.lists.elem backgroundExt videos;
   placeholderExt = if placeholder == null then "png" else extension placeholder;
 
-  # quoted so colors and empty strings survive qsettings
+  # quoted so colors survive qsettings. sddm skips empty values in the
+  # .user file, so an image background is also its own placeholder rather
+  # than falling back to the theme's missing Backgrounds/custom.png
   quote = v: builtins.toJSON (if lib.isBool v then lib.boolToString v else toString v);
   userConfig = lib.generators.toINI { mkKeyValue = k: v: "${k}=${quote v}"; } {
     General = {
       Background = "Backgrounds/background.${backgroundExt}";
-      BackgroundPlaceholder = lib.strings.optionalString isVideo "Backgrounds/placeholder.${placeholderExt}";
+      BackgroundPlaceholder =
+        if isVideo then
+          "Backgrounds/placeholder.${placeholderExt}"
+        else
+          "Backgrounds/background.${backgroundExt}";
     }
     // themeConfig;
   };
