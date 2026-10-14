@@ -49,6 +49,14 @@
       };
     };
 
+    # the search page of these packages, published to github pages. its own
+    # nixpkgs, which its pinned npm dependency hash is made for
+    search = {
+      type = "github";
+      owner = "NuschtOS";
+      repo = "search";
+    };
+
     # factory game main menu login screen
     sddm-foundry-theme = {
       type = "github";

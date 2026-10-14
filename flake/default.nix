@@ -32,8 +32,18 @@ in
 {
   overlays.default = mine;
 
-  # everything, including `toolsets`
-  legacyPackages = forAllPkgs (pkgs: mine pkgs pkgs);
+  # everything, including `toolsets`, and the search page, which is not a
+  # package to cache
+  legacyPackages = forAllPkgs (
+    pkgs:
+    mine pkgs pkgs
+    // {
+      search = pkgs.callPackage ../docs/search {
+        inherit inputs;
+        packages = self.packages.${pkgs.stdenv.hostPlatform.system};
+      };
+    }
+  );
 
   packages = forAllPkgs (
     pkgs:

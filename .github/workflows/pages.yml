@@ -1,0 +1,64 @@
+name: "Pages"
+
+# the package search at pandecode.github.io/nixbuilds, rebuilt when the
+# packages change
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "pkgs/**"
+      - "docs/**"
+      - "flake.lock"
+  workflow_dispatch:
+
+permissions: {}
+
+# a newer push replaces a build still running
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Install Nix
+        uses: cachix/install-nix-action@13d8dd58da0234aa297dedd986986ccb8e7f3e24 # v31.11.1
+        with:
+          extra_nix_config: |
+            experimental-features = nix-command flakes
+            accept-flake-config = true
+
+      # pages serves it under /nixbuilds/, so that is its base
+      - name: Build
+        run: |
+          drv=$(nix eval --raw .#legacyPackages.x86_64-linux.search \
+            --apply 's: (s.override { baseHref = "/nixbuilds/"; }).drvPath')
+          nix build "$drv^out" --out-link result
+
+      - name: Upload
+        uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
+        with:
+          path: result/
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - name: Deploy
+        id: deploy
+        uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5.0.1
