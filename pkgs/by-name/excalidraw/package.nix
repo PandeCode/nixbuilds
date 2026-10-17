@@ -10,13 +10,13 @@
 stdenv.mkDerivation (finalAttrs: {
   pname = "excalidraw";
   # the app has no releases; excalidraw.com runs the newest commit
-  version = "0.18.1-unstable-2026-10-12";
+  version = "0.18.1-unstable-2026-10-14";
 
   src = fetchFromGitHub {
     owner = "excalidraw";
     repo = "excalidraw";
-    rev = "541653c7c9d587d463a47daacff9fb30e45a52e7";
-    hash = "sha256-4lElC9p+ljpAw+Joy5/XPG1SEHCUi8FU4RIjvGqLFkA=";
+    rev = "4c37956ba5f04ec342a9d9d5891a38f22c5b7b4e";
+    hash = "sha256-l0lnETwuupz7QsrqeA6IfqGIilxVYpLTAmB0c1SRAZY=";
   };
 
   offlineCache = fetchYarnDeps {
