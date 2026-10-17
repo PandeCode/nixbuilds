@@ -16,13 +16,13 @@
 clangStdenv.mkDerivation {
   pname = "raddebugger";
   # linux fixes land on master between the alpha tags
-  version = "0.9.29-alpha-unstable-2026-10-12";
+  version = "0.9.29-alpha-unstable-2026-10-17";
 
   src = fetchFromGitHub {
     owner = "EpicGames";
     repo = "raddebugger";
-    rev = "d5cbced499843ad9ef7873240d98dea6c29bbc4c";
-    hash = "sha256-lhIhOYpTif0zMtIXk7WbW7iQ8/naENE5DzyahDed3d8=";
+    rev = "62b715a30e5da6b8d7e02372a8e7458feab1df97";
+    hash = "sha256-+xX9R7PIbXYFOJSAPs9QoIYszi5w7YssrtmncvJk5xE=";
   };
 
   strictDeps = true;

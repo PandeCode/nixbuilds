@@ -3,8 +3,8 @@
 {
   "bitwarden-password-manage" = {
     id = "nngceckbapebfimnlniiiahkandclblb";
-    version = "2026.9.3";
-    hash = "sha256-mWT2YKEQI8sZpzC3+Qg1PsHa53oCfIGSMV0Kfz2O+SE=";
+    version = "2026.10.0";
+    hash = "sha256-8v63/EbSVQvvm2mvHMNYrqJrkKlHZF+d4W7BTZKW72k=";
   };
 
   "cc++-devtools-support-dwa" = {
