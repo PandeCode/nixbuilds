@@ -2,8 +2,6 @@
   lib,
   stdenv,
   fetchFromCodeberg,
-  fetchzip,
-  linkFarm,
   libxkbcommon,
   pkg-config,
   wayland,
@@ -12,9 +10,12 @@
   zig_0_16,
 }:
 
+let
+  zig = zig_0_16;
+in
 stdenv.mkDerivation (finalAttrs: {
   pname = "rill";
-  # pinned 2026-09-15, rill has no releases
+  # rill has no releases; pkgs/update.sh moves it to the newest commit
   version = "0.7.0-unstable-2026-10-01";
 
   src = fetchFromCodeberg {
@@ -24,37 +25,23 @@ stdenv.mkDerivation (finalAttrs: {
     hash = "sha256-vVXE0OF2qZI/LIzzOAoaoT7+ARcVI+cftSXdQ6pniTQ=";
   };
 
-  # generated with zon2nix from build.zig.zon at the rev above
-  deps = linkFarm "rill-zig-deps" [
-    {
-      name = "N-V-__8AAA3xAgD5Kwpwii8EK-ddKekNkv4zv8rJiDhDHLuI";
-      path = fetchzip {
-        url = "https://codeberg.org/river/river/archive/v0.4.8:protocol.tar.gz";
-        hash = "sha256-KsgaDFg3lQGt53sCKXumYmWWfuH3iritU211fnuZkJQ=";
-      };
-    }
-    {
-      name = "wayland-0.6.0-lQa1kqz8AQADQmdNJsNhLoNHcnEGEUjrOaPV-dtEnEmX";
-      path = fetchzip {
-        url = "https://codeberg.org/ifreund/zig-wayland/archive/v0.6.0.tar.gz";
-        hash = "sha256-3m/ITNhZUJ/5uD/Tqm+0uZSktGoYgWF5oldOqOCUkIE=";
-      };
-    }
-    {
-      name = "xkbcommon-0.4.0-VDqIe0i2AgDRsok2GpMFYJ8SVhQS10_PI2M_CnHXsJJZ";
-      path = fetchzip {
-        url = "https://codeberg.org/ifreund/zig-xkbcommon/archive/v0.4.0.tar.gz";
-        hash = "sha256-zQkmP/cuhAtjOLqYS5D15khKzpqyhbyZ0TD6/8jOkqE=";
-      };
-    }
-  ];
-
   strictDeps = true;
+
+  # one hash for every package in build.zig.zon, so nix-update (and the
+  # weekly bot) refreshes it with the source instead of leaving it behind
+  zigDeps = zig.fetchDeps {
+    inherit (finalAttrs) src pname version;
+    hash = "sha256-+FqBKmzOEqhPEykvMhNsuyKTKWc5/x19anbk5LNxokM=";
+  };
+
+  postConfigure = ''
+    ln -s ${finalAttrs.zigDeps} "$ZIG_GLOBAL_CACHE_DIR/p"
+  '';
 
   nativeBuildInputs = [
     pkg-config
     wayland-scanner
-    zig_0_16
+    zig
   ];
 
   # wayland-scanner in both, like nixpkgs' river: zig-wayland finds it
@@ -64,11 +51,6 @@ stdenv.mkDerivation (finalAttrs: {
     wayland
     wayland-protocols
     wayland-scanner
-  ];
-
-  zigBuildFlags = [
-    "--system"
-    "${finalAttrs.deps}"
   ];
 
   meta = {
