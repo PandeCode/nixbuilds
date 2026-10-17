@@ -7,11 +7,11 @@
   wayland,
   wayland-protocols,
   wayland-scanner,
-  zig_0_16,
+  zig_0_17,
 }:
 
 let
-  zig = zig_0_16;
+  zig = zig_0_17;
 in
 stdenv.mkDerivation (finalAttrs: {
   pname = "rill";
