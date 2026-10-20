@@ -44,6 +44,55 @@ betterbird() {
 }
 run betterbird betterbird
 
+# iree: the compiler wheel from pypi and the runtime from the same tag, with
+# the submodule commits that tag pins
+iree() {
+    local compiler=pkgs/by-name/iree-compiler/package.nix
+    local runtime=pkgs/by-name/iree-runtime/package.nix
+    local old new json sys platform sha hash rev name repo
+    old=$(sed -n 's/^  version = "\(.*\)";$/\1/p' "$compiler")
+    json=$(curl -fsSL https://pypi.org/pypi/iree-base-compiler/json) || return 1
+    new=$(jq -r .info.version <<<"$json")
+    [[ -n $new && $new != null ]] || return 1
+    [[ $new == "$old" ]] && return 0
+    json=$(curl -fsSL "https://pypi.org/pypi/iree-base-compiler/$new/json") || return 1
+    for sys in x86_64 aarch64; do
+        platform="manylinux_2_27_$sys.manylinux_2_28_$sys"
+        sha=$(jq -r --arg f "iree_base_compiler-$new-cp312-abi3-$platform.whl" \
+            '.urls[] | select(.filename == $f) | .digests.sha256' <<<"$json")
+        [[ -n $sha ]] || return 1
+        hash=$(nix hash convert --hash-algo sha256 --to sri "$sha") || return 1
+        # the hash line right after this platform's line
+        sed -i "/platform = \"$platform\";/{n;s|hash = \"sha256-[^\"]*\";|hash = \"$hash\";|}" "$compiler"
+    done
+    sed -i "s|^  version = \"$old\";|  version = \"$new\";|" "$compiler"
+
+    # the source at that tag, for the headers and the runtime, then the
+    # runtime's submodules, each fetch found by its owner
+    hash=$(nix flake prefetch --json "github:iree-org/iree/v$new" | jq -r .hash) || return 1
+    sed -i "/repo = \"iree\";/,/hash/{s|hash = \"sha256-[^\"]*\";|hash = \"$hash\";|}" "$compiler"
+    for name in flatcc:dvidelabs/flatcc vulkan_headers:KhronosGroup/Vulkan-Headers; do
+        repo=${name#*:}
+        rev=$(curl -fsSL ${GITHUB_TOKEN:+-H "Authorization: Bearer $GITHUB_TOKEN"} \
+            "https://api.github.com/repos/iree-org/iree/contents/third_party/${name%%:*}?ref=v$new" |
+            jq -r .sha) || return 1
+        bump_github "$runtime" "$repo" "$rev" || return 1
+    done
+    rev=$(curl -fsSL "https://raw.githubusercontent.com/iree-org/iree/v$new/build_tools/third_party/libbacktrace/CMakeLists.txt" |
+        sed -n 's/^set(LIBBACKTRACE_VERSION "\(.*\)")$/\1/p') || return 1
+    bump_github "$runtime" ianlancetaylor/libbacktrace "$rev" || return 1
+    echo "iree: $old -> $new"
+}
+
+# points the fetchFromGitHub of owner/repo in a file at rev, with its hash
+bump_github() {
+    local file=$1 owner=${2%/*} repo=${2#*/} rev=$3 hash
+    [[ $rev =~ ^[0-9a-f]{40}$ ]] || return 1
+    hash=$(nix flake prefetch --json "github:$owner/$repo/$rev" | jq -r .hash) || return 1
+    sed -i "/owner = \"$owner\";/,/hash/{s|rev = \"[^\"]*\";|rev = \"$rev\";|;s|hash = \"sha256-[^\"]*\";|hash = \"$hash\";|}" "$file"
+}
+run iree iree
+
 # chromium extensions: whatever file the store serves now, with the version
 # from its own manifest. chromium's version comes from this flake's nixpkgs,
 # after `nix flake update`, so it is the one these get built for
