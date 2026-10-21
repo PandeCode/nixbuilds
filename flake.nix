@@ -25,17 +25,6 @@
 
     ### packages from other flakes, built against this nixpkgs and cached
     # run binaries that are not patched for nixos
-    nix-alien = {
-      type = "github";
-      owner = "thiagokokada";
-      repo = "nix-alien";
-
-      # its nix-index-database already follows its nixpkgs
-      inputs = {
-        nixpkgs.follows = "nixpkgs";
-        flake-compat.follows = "";
-      };
-    };
 
     # zig built from master
     zig-overlay = {

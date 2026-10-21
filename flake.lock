@@ -67,50 +67,7 @@
         "type": "github"
       }
     },
-    "nix-alien": {
-      "inputs": {
-        "flake-compat": [],
-        "nix-index-database": "nix-index-database",
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1792056812,
-        "narHash": "sha256-3FHVsncGsfcxozcQgHULGkQ6TqXOlguxX6YlBQhQrT8=",
-        "owner": "thiagokokada",
-        "repo": "nix-alien",
-        "rev": "07c41bfdc3b986b7e65e19380b28916e10112c0f",
-        "type": "github"
-      },
-      "original": {
-        "owner": "thiagokokada",
-        "repo": "nix-alien",
-        "type": "github"
-      }
-    },
     "nix-index-database": {
-      "inputs": {
-        "nixpkgs": [
-          "nix-alien",
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1791711434,
-        "narHash": "sha256-LpIhxnuO0tYeZ4k7BbNMxsPs2zJpB4hWXO1jdhUuE7Q=",
-        "owner": "nix-community",
-        "repo": "nix-index-database",
-        "rev": "9a2dd40780eeab8543aa97c59c26f11267025616",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nix-community",
-        "repo": "nix-index-database",
-        "type": "github"
-      }
-    },
-    "nix-index-database_2": {
       "inputs": {
         "nixpkgs": [
           "search",
@@ -183,7 +140,6 @@
     "root": {
       "inputs": {
         "grub-foundry-theme": "grub-foundry-theme",
-        "nix-alien": "nix-alien",
         "nixpkgs": "nixpkgs",
         "nixutils": "nixutils",
         "sddm-foundry-theme": "sddm-foundry-theme",
@@ -218,7 +174,7 @@
       "inputs": {
         "flake-utils": "flake-utils",
         "ixx": "ixx",
-        "nix-index-database": "nix-index-database_2",
+        "nix-index-database": "nix-index-database",
         "nixpkgs": "nixpkgs_2"
       },
       "locked": {
