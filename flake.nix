@@ -68,5 +68,17 @@
         nixutils.follows = "nixutils";
       };
     };
+
+    # the matching boot menu, the load game screen
+    grub-foundry-theme = {
+      type = "github";
+      owner = "PandeCode";
+      repo = "grub-foundry-theme";
+
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        nixutils.follows = "nixutils";
+      };
+    };
   };
 }

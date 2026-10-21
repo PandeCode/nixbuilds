@@ -21,6 +21,7 @@ lib.filesystem.packagesFromDirectoryRecursive {
   directory = ./by-name;
 }
 # keep-sorted start
+// fromFlake inputs.grub-foundry-theme "grub-foundry-theme" "default"
 // fromFlake inputs.nix-alien "nix-alien" "nix-alien"
 // fromFlake inputs.sddm-foundry-theme "sddm-foundry-theme" "default"
 // fromFlake inputs.zig-overlay "zig-master" "master"

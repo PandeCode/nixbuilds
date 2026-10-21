@@ -18,6 +18,29 @@
         "type": "github"
       }
     },
+    "grub-foundry-theme": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "nixutils": [
+          "nixutils"
+        ]
+      },
+      "locked": {
+        "lastModified": 1792546443,
+        "narHash": "sha256-8xqCSB8y3jR7BczK9iaI9Q6ncvGm1/xsQi62jiaCLUk=",
+        "owner": "PandeCode",
+        "repo": "grub-foundry-theme",
+        "rev": "7875337bdb3eacb15d7a932a98bcb167a22e952f",
+        "type": "github"
+      },
+      "original": {
+        "owner": "PandeCode",
+        "repo": "grub-foundry-theme",
+        "type": "github"
+      }
+    },
     "ixx": {
       "inputs": {
         "flake-utils": [
@@ -159,6 +182,7 @@
     },
     "root": {
       "inputs": {
+        "grub-foundry-theme": "grub-foundry-theme",
         "nix-alien": "nix-alien",
         "nixpkgs": "nixpkgs",
         "nixutils": "nixutils",
