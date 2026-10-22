@@ -94,7 +94,7 @@
         "narHash": "sha256-ij8QUxzTOHovLrNOxVRx+RAhGQFOMsJbji0veiatH5k=",
         "rev": "02c087f3fe673c9e317f206a627cb6b910336dbe",
         "type": "tarball",
-        "url": "https://releases.nixos.org/nixos/unstable/nixos-26.11pre1097682.02c087f3fe67/nixexprs.tar.zst"
+        "url": "https://releases.nixos.org/nixos/unstable/nixos-26.11pre1097682.02c087f3fe67/nixexprs.tar.zst?lastModified=1792502884&rev=02c087f3fe673c9e317f206a627cb6b910336dbe"
       },
       "original": {
         "type": "tarball",
@@ -231,11 +231,11 @@
         "systems": "systems_2"
       },
       "locked": {
-        "lastModified": 1792523939,
-        "narHash": "sha256-T+SRDVaC3gGXUPDUR0ZejSqbHSZJaYE9gq2iw6yF+H8=",
+        "lastModified": 1792585651,
+        "narHash": "sha256-Kg8Qdi6ur+K5hNJwav0pEqdylGd7vXxEPeBvaKW5nxA=",
         "owner": "mitchellh",
         "repo": "zig-overlay",
-        "rev": "31d0e80a6e93e054015b55b6f0a3468d80ea66e4",
+        "rev": "98819174f1bb7c9961c3ebbb00d19fc4e1c1960d",
         "type": "github"
       },
       "original": {
