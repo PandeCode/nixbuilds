@@ -135,7 +135,7 @@ chromium_extensions() {
     jq -r '
         to_entries
         | map("  \(.key | @json) = {\n"
-            + (.value as $v | ["id", "version", "hash", "github", "asset"]
+            + (.value as $v | ["name", "id", "version", "hash", "github", "asset"]
                 | map(select($v[.] != null) | "    \(.) = \($v[.] | @json);")
                 | join("\n"))
             + "\n  };")

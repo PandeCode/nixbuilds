@@ -1,6 +1,7 @@
 # chromium extensions, pinned: give `extensions` to
 # programs.chromium.extensions. building this fetches them all, so ci checks
-# the pins and charon caches them. pkgs/update.sh rewrites extensions.nix
+# the pins and charon caches them. pkgs/update.sh rewrites extensions.nix,
+# keeping each name, which the description lists for the package search
 {
   lib,
   fetchurl,
@@ -11,6 +12,10 @@
 let
   # the store serves the newest file this chromium can run
   prodversion = lib.versions.major ungoogled-chromium.version;
+
+  pins = import ./extensions.nix;
+  # an entry without a name shows its key
+  named = lib.attrsets.mapAttrsToList (key: e: e // { name = e.name or key; }) pins;
 
   url =
     e:
@@ -28,7 +33,7 @@ let
       url = url e;
       inherit (e) hash;
     };
-  }) (import ./extensions.nix);
+  }) pins;
 in
 
 (linkFarm "chromium-extensions" (
@@ -37,6 +42,11 @@ in
     path = e.crxPath;
   }) extensions
 )).overrideAttrs
-  {
+  (old: {
     passthru = { inherit extensions; };
-  }
+
+    meta = old.meta or { } // {
+      description = "Chromium extensions: " + lib.strings.concatMapStringsSep ", " (e: e.name) named;
+      longDescription = lib.strings.concatMapStrings (e: "- ${e.name} ${e.version}\n") named;
+    };
+  })
