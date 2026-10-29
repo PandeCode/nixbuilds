@@ -60,7 +60,8 @@ let
       matlab-language-server
       ocaml
       ocamlPackages.ocaml-lsp
-      sbcl
+      # swank for conjure in hermes
+      (sbcl.withPackages (p: [ p.swank ]))
       stack
     ];
 
