@@ -12,8 +12,23 @@ let
     vscode-extensions.vadimcn.vscode-lldb
   ];
 
+  # agda with the standard library, als embeds its own agda and gets the same
+  # libraries through AGDA_DIR
+  agdaWithLibraries = pkgs.agda.withPackages (p: [ p.standard-library ]);
+  alsWithLibraries = pkgs.symlinkJoin {
+    name = "als-with-libraries";
+    paths = [ pkgs.agda-language-server ];
+    nativeBuildInputs = [ pkgs.makeWrapper ];
+    postBuild = "wrapProgram $out/bin/als --set-default AGDA_DIR ${agdaWithLibraries.agdaDir}";
+  };
+
   tools = with pkgs; {
     # keep-sorted start block=yes newline_separated=yes
+    agda = [
+      agdaWithLibraries
+      alsWithLibraries
+    ];
+
     base = [
       ast-grep
       fd
@@ -132,7 +147,7 @@ tools
 
     # keep-sorted start
     cxx = minimal ++ tools.cxx ++ debug;
-    fun = minimal ++ tools.fun ++ debug;
+    fun = minimal ++ tools.agda ++ tools.fun ++ debug;
     go = minimal ++ tools.go ++ debug;
     python = minimal ++ tools.python;
     rust = minimal ++ tools.rust ++ debug;
