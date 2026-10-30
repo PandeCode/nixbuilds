@@ -23,11 +23,11 @@
 
 let
   pname = "xtool";
-  version = "1.9.2";
+  version = "1.24.0";
 
   src = fetchurl {
     url = "https://github.com/xtool-org/xtool/releases/download/${version}/xtool-x86_64.AppImage";
-    hash = "sha256-TpZSRz1uoMO9Ce5igfUqh6UWxgSD8/hMN2r3IurIPCc=";
+    hash = "sha256-2/2dchbwd8hMFxtojEFzw3wjyna/f9GF0amuilPatZ8=";
   };
 
   # the binary finds its bundled libs through $ORIGIN/../lib, so it stays out
