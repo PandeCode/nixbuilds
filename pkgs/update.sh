@@ -44,6 +44,37 @@ betterbird() {
 }
 run betterbird betterbird
 
+# xtool from its releases, then the newest patch of the swift it runs on. a
+# new swift minor waits until xtool's install docs ask for it
+xtool() {
+    local file=pkgs/by-name/xtool/package.nix old new hash
+    old=$(sed -n 's/^  version = "\(.*\)";$/\1/p' "$file")
+    new=$(curl -fsSL ${GITHUB_TOKEN:+-H "Authorization: Bearer $GITHUB_TOKEN"} \
+        https://api.github.com/repos/xtool-org/xtool/releases/latest | jq -r .tag_name) || return 1
+    [[ -n $new && $new != null ]] || return 1
+    if [[ $new != "$old" ]]; then
+        hash=$(nix store prefetch-file --json \
+            "https://github.com/xtool-org/xtool/releases/download/$new/xtool-x86_64.AppImage" |
+            jq -r .hash) || return 1
+        sed -i -e "s|^  version = \"$old\";|  version = \"$new\";|" \
+            -e "/xtool-x86_64.AppImage/,/hash/{s|hash = \"sha256-[^\"]*\";|hash = \"$hash\";|}" "$file"
+        echo "xtool: $old -> $new"
+    fi
+
+    old=$(sed -n 's/^    version = "\(.*\)";$/\1/p' "$file")
+    new=$(curl -fsSL https://www.swift.org/api/v1/install/releases.json |
+        jq -r --arg minor "${old%.*}." '[.[].name | select(startswith($minor))] | last') || return 1
+    [[ -n $new && $new != null ]] || return 1
+    [[ $new == "$old" ]] && return 0
+    hash=$(nix store prefetch-file --json \
+        "https://download.swift.org/swift-$new-release/ubuntu2404/swift-$new-RELEASE/swift-$new-RELEASE-ubuntu24.04.tar.gz" |
+        jq -r .hash) || return 1
+    sed -i -e "s|^    version = \"$old\";|    version = \"$new\";|" \
+        -e "/download.swift.org/,/hash/{s|hash = \"sha256-[^\"]*\";|hash = \"$hash\";|}" "$file"
+    echo "swift for xtool: $old -> $new"
+}
+run xtool xtool
+
 # iree: the compiler wheel from pypi and the runtime from the same tag, with
 # the submodule commits that tag pins
 iree() {
