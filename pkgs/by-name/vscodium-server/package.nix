@@ -27,11 +27,11 @@ in
 
 stdenv.mkDerivation (finalAttrs: {
   pname = "vscodium-server";
-  version = "1.140.06880";
+  version = "1.143.17232";
 
   src = fetchurl {
     url = "https://github.com/VSCodium/vscodium/releases/download/${finalAttrs.version}/vscodium-reh-web-linux-x64-${finalAttrs.version}.tar.gz";
-    hash = "sha256-8WOI6lgXBhPG1eSSqhBBCkceHYbYyzQ+PIFHSTp5gak=";
+    hash = "sha256-DR4A+k41ZGF6unmKiDldml+1B9dx1xHgRUuxBloDD3w=";
   };
 
   sourceRoot = ".";

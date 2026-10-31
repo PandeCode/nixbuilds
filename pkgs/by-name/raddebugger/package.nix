@@ -21,8 +21,8 @@ clangStdenv.mkDerivation {
   src = fetchFromGitHub {
     owner = "EpicGames";
     repo = "raddebugger";
-    rev = "771f63dd35d3d17f0c7914c5031959282802be5f";
-    hash = "sha256-y76eVv2SkDeaesHuBFmiHQ6bd2rnkbt9j2qE3fm8B/E=";
+    rev = "bcf86a8b60ad7fc97cb9507992e48d41b3c0b921";
+    hash = "sha256-PaEDEPChNiUmlFdBaOHCRCcsg3IQnT1/PaUyY89ixrA=";
   };
 
   strictDeps = true;

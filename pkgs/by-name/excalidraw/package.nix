@@ -10,18 +10,18 @@
 stdenv.mkDerivation (finalAttrs: {
   pname = "excalidraw";
   # the app has no releases; excalidraw.com runs the newest commit
-  version = "0.18.1-unstable-2026-10-23";
+  version = "0.18.1-unstable-2026-10-30";
 
   src = fetchFromGitHub {
     owner = "excalidraw";
     repo = "excalidraw";
-    rev = "b7de45e88111f5680ae4bb3c3f3541c7d3b279fe";
-    hash = "sha256-65En0ZRLEuCixs4dh4ILNvIgMkwyLx6w05xXob27/RE=";
+    rev = "a758e93d6a03e9f995973703cb886850a398a6d3";
+    hash = "sha256-XdlaiyyLtRkP7D8wKE2Mq6K2Evz2BshbdsWey+YsXjg=";
   };
 
   offlineCache = fetchYarnDeps {
     yarnLock = "${finalAttrs.src}/yarn.lock";
-    hash = "sha256-Fib09SBYwALGpa00t+f+xyFGbu+6hxIUME2M5wN6+5o=";
+    hash = "sha256-xCUvZL9alriBh+02UCIChdKzpwmDB2IO3zjQIEV8E9Q=";
   };
 
   # fonts from this site instead of excalidraw's cdn, and no analytics
