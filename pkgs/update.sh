@@ -23,7 +23,7 @@ for pkg in helium hyperfluent-grub-theme plymouth-theme-chain vscodium-server; d
 done
 
 # no releases, or fixes land between tags, so the newest commit
-for pkg in excalidraw plymouth-simulated-universe plymouth-theme-cat raddebugger rill; do
+for pkg in excalidraw plymouth-simulated-universe plymouth-theme-cat raddebugger rill wavedrom-rs; do
 	run "$pkg" nix-update --flake --version=branch "$pkg"
 done
 
