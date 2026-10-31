@@ -4,8 +4,8 @@
   "bitwarden-password-manage" = {
     name = "Bitwarden Password Manager";
     id = "nngceckbapebfimnlniiiahkandclblb";
-    version = "2026.10.0";
-    hash = "sha256-8v63/EbSVQvvm2mvHMNYrqJrkKlHZF+d4W7BTZKW72k=";
+    version = "2026.10.1";
+    hash = "sha256-2SlT6sQNZPWzjiVNIZa6uwvwxegcHZr6rkzYilW6tCw=";
   };
 
   "cc++-devtools-support-dwa" = {
@@ -18,15 +18,15 @@
   "consumer-rights-wiki" = {
     name = "Consumer Rights Wiki";
     id = "bppajinomefndbbmopljhbdfefnefdha";
-    version = "1.0.35";
-    hash = "sha256-FGL23JSqvxNtYlzvpxJdOJx+R0rI63VoU1li1yh3rTA=";
+    version = "1.0.36";
+    hash = "sha256-MbvfC6C2ChKCag/Z4pcOhl++Sb9MT/oxVd5tcwiMZKI=";
   };
 
   "dark-reader" = {
     name = "Dark Reader";
     id = "eimadpbcbfnmbkopoojfekhnkhdbieeh";
-    version = "4.9.133";
-    hash = "sha256-7jjyDR1QeJ9LSCyaGl2tq1mbhoL9Kn37feIfroVhuRg=";
+    version = "4.9.134";
+    hash = "sha256-hkpzAcaEGzQGbDU3wS6rHBei9MyPJ8XwXs4rEbJhVYY=";
   };
 
   "desmodder-for-desmos" = {
