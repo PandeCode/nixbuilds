@@ -33,6 +33,7 @@ let
       ast-grep
       fd
       harper
+      just-lsp
       proselint
       ripgrep
       universal-ctags
