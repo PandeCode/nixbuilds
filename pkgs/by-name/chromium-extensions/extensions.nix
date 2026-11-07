@@ -4,8 +4,8 @@
   "bitwarden-password-manage" = {
     name = "Bitwarden Password Manager";
     id = "nngceckbapebfimnlniiiahkandclblb";
-    version = "2026.10.1";
-    hash = "sha256-2SlT6sQNZPWzjiVNIZa6uwvwxegcHZr6rkzYilW6tCw=";
+    version = "2026.10.2";
+    hash = "sha256-HJlRefdYYxBMim44nhBQVoqCwNLAfWrPa2JwPSSUMMk=";
   };
 
   "cc++-devtools-support-dwa" = {
@@ -25,8 +25,8 @@
   "dark-reader" = {
     name = "Dark Reader";
     id = "eimadpbcbfnmbkopoojfekhnkhdbieeh";
-    version = "4.9.134";
-    hash = "sha256-hkpzAcaEGzQGbDU3wS6rHBei9MyPJ8XwXs4rEbJhVYY=";
+    version = "4.9.135";
+    hash = "sha256-C3hXrpL9Ouq0KSu3VaoPEI3mtovBLxjQyH/nV83UCp0=";
   };
 
   "desmodder-for-desmos" = {
@@ -88,8 +88,8 @@
   "ublock-origin" = {
     name = "uBlock Origin";
     id = "hifpfkolgdolnmfmncmfocfiiaofjikk";
-    version = "1.75.0";
-    hash = "sha256-OTz5VwnRB01AIpcOkBTkNDlcU6giOH8eJfQ76Xz0tYI=";
+    version = "1.75.4";
+    hash = "sha256-Jq2Gl6exnh719MB1AWXdWFy8dwfHLbw/OgvbzXEvNXY=";
     github = "gorhill/uBlock";
     asset = "uBlock0_@version@.chromium.zip";
   };
