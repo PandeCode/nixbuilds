@@ -16,13 +16,13 @@ in
 stdenv.mkDerivation (finalAttrs: {
   pname = "rill";
   # rill has no releases; pkgs/update.sh moves it to the newest commit
-  version = "0.7.0-unstable-2026-10-27";
+  version = "0.7.0-unstable-2026-11-03";
 
   src = fetchFromCodeberg {
     owner = "lzj15";
     repo = "rill";
-    rev = "7b3ce20659218c86cf25ff66a2e600af03b33cf7";
-    hash = "sha256-bILoaiSoD44OK21nuM5dD0MJyQze4vLJSqfbylHcAw4=";
+    rev = "7ad79815df3ed83b9124b2c6fd2dfe4e64853db9";
+    hash = "sha256-LNa+5c10h6WQtvXAH/G8ssNWFxcVvS6gNp7nJTGSnGg=";
   };
 
   strictDeps = true;
