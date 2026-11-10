@@ -22,6 +22,15 @@ let
     postBuild = "wrapProgram $out/bin/als --set-default AGDA_DIR ${agdaWithLibraries.agdaDir}";
   };
 
+  # nixpkgs' cargo hook now makes zstd-sys and onig_sys link the system
+  # library instead of their bundled copy, and these three don't list it yet
+  withSystemLibs =
+    libs: p:
+    p.overrideAttrs (old: {
+      nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [ pkgs.pkg-config ];
+      buildInputs = old.buildInputs or [ ] ++ libs;
+    });
+
   tools = with pkgs; {
     # keep-sorted start block=yes newline_separated=yes
     agda = [
@@ -40,12 +49,12 @@ let
     ];
 
     cxx = [
-      asm-lsp
+      (withSystemLibs [ zstd ] asm-lsp)
       ccls
       clang-tools
       cmake-format
       cmake-lint
-      neocmakelsp
+      (withSystemLibs [ oniguruma ] neocmakelsp)
     ];
 
     fennel = [
@@ -96,7 +105,7 @@ let
     python = [
       basedpyright
       black
-      pyrefly
+      (withSystemLibs [ zstd ] pyrefly)
       ruff
     ];
 
