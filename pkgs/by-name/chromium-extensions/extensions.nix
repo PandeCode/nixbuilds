@@ -32,8 +32,8 @@
   "desmodder-for-desmos" = {
     name = "DesModder for Desmos";
     id = "eclmfdfimjhkmjglgdldedokjaemjfjp";
-    version = "0.15.17";
-    hash = "sha256-hPY1/jgPYMPE3Sqtjy0SdjheTPF111J0RnUSE+cvAk0=";
+    version = "0.16.0";
+    hash = "sha256-9hGZnhH5PwrcUpRwpUj+VrBMd8OPftHDEM+7AvWndjY=";
   };
 
   "enhancer-for-youtube" = {
@@ -53,8 +53,8 @@
   "mal-sync" = {
     name = "MAL-Sync";
     id = "kekjfbackdeiabghhcdklcdoekaanoel";
-    version = "0.12.5";
-    hash = "sha256-OPAVyoXE4lDFlsCsMrBkS9Grl8Vy+oLRTU55vepyFzc=";
+    version = "0.13.0";
+    hash = "sha256-dyjfXNHGGLjNXMoQdbNZivkab2k7ns/jhPwOS2uOC7w=";
   };
 
   "privacy-badger" = {
@@ -88,8 +88,8 @@
   "ublock-origin" = {
     name = "uBlock Origin";
     id = "hifpfkolgdolnmfmncmfocfiiaofjikk";
-    version = "1.76.0";
-    hash = "sha256-52oZEkJsqnuGea0R3RQNFSnCPbIt2+iStvkB6bd2NFY=";
+    version = "1.76.2";
+    hash = "sha256-xi9VIZU8GhU0/qaEx9VwlceC+o5DPLly9rW2ws6lvBw=";
     github = "gorhill/uBlock";
     asset = "uBlock0_@version@.chromium.zip";
   };
