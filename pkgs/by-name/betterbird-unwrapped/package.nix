@@ -13,7 +13,7 @@
 }:
 
 let
-  version = "153.6.0esr-bb12";
+  version = "153.7.0esr-bb13";
   # a thunderbird- name gets the wrapper's mail categories and mime types
   libName = "thunderbird-betterbird-${version}";
 
@@ -28,7 +28,7 @@ stdenv.mkDerivation {
 
   src = fetchurl {
     url = "https://www.betterbird.eu/downloads/LinuxArchive/betterbird-${version}.en-US.linux-x86_64.tar.xz";
-    hash = "sha256-nYC2s0Jcl9k87qutPy3gxyLg/QVTHY0to0SVhqhV9B8=";
+    hash = "sha256-FF0Ho0/AW7pQpBstk7xXaS4GkOV+b9nKQTwvy2QsOTQ=";
   };
 
   nativeBuildInputs = [
