@@ -18,7 +18,7 @@ run() {
 }
 
 # releases on github
-for pkg in helium hyperfluent-grub-theme plymouth-theme-chain vscodium-server; do
+for pkg in helium hyperfluent-grub-theme materialx-tools plymouth-theme-chain vscodium-server; do
 	run "$pkg" nix-update --flake "$pkg"
 done
 
