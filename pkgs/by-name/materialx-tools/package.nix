@@ -6,6 +6,7 @@
   libxinerama,
   libxrandr,
   materialx,
+  zenity,
 }:
 
 # nixpkgs materialx with the viewer and the graph editor on. its own name, so
@@ -24,6 +25,14 @@ materialx.overrideAttrs (
       fetchSubmodules = true;
       hash = "sha256-a08zqLkjBOPO2AADd7H4yDIfyfah65+WFt0DyJcHgGI=";
     };
+
+    # both file dialogs popen zenity by name
+    postPatch = # bash
+      ''
+        substituteInPlace source/MaterialXView/NanoGUI/src/common.cpp \
+          source/MaterialXGraphEditor/FileDialog.cpp \
+          --replace-fail '"zenity ' '"${lib.getExe zenity} '
+      '';
 
     # nanogui and the graph editor build their own glfw against these
     buildInputs = prev.buildInputs ++ [
