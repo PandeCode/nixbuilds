@@ -43,6 +43,13 @@
     hash = "sha256-0vw3iCq/F5muPwn7Ny4g8LBkKrmSspaCtBo2ATxULeQ=";
   };
 
+  "firenvim" = {
+    name = "Firenvim";
+    id = "egpjdkipkomnmjhjmdamaniclmdlobbo";
+    version = "0.2.17";
+    hash = "sha256-J6WwSRWQ/i9DM8QjjjPlWC95v2IDOK9Mjnr8GF7W4YE=";
+  };
+
   "lighthouse" = {
     name = "Lighthouse";
     id = "blipmdconlkpinefehnmjammfjpmpbjk";
