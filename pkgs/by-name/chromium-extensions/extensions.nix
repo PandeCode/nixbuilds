@@ -4,8 +4,8 @@
   "bitwarden-password-manage" = {
     name = "Bitwarden Password Manager";
     id = "nngceckbapebfimnlniiiahkandclblb";
-    version = "2026.10.2";
-    hash = "sha256-HJlRefdYYxBMim44nhBQVoqCwNLAfWrPa2JwPSSUMMk=";
+    version = "2026.11.0";
+    hash = "sha256-W7/EQcarOCqGd7EzrqP8P/K67XzP5usbFhcbQpiTc/I=";
   };
 
   "cc++-devtools-support-dwa" = {
@@ -95,8 +95,8 @@
   "ublock-origin" = {
     name = "uBlock Origin";
     id = "hifpfkolgdolnmfmncmfocfiiaofjikk";
-    version = "1.76.2";
-    hash = "sha256-xi9VIZU8GhU0/qaEx9VwlceC+o5DPLly9rW2ws6lvBw=";
+    version = "1.76.6";
+    hash = "sha256-iDHK1J6sOsPYXSwy1IoyjGPhUuqJDNsiI8d/W3wOeDc=";
     github = "gorhill/uBlock";
     asset = "uBlock0_@version@.chromium.zip";
   };

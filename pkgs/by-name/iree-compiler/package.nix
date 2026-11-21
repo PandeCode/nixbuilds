@@ -14,18 +14,18 @@ let
   platforms = {
     x86_64-linux = {
       platform = "manylinux_2_27_x86_64.manylinux_2_28_x86_64";
-      hash = "sha256-0J0uvYlV0+7qtWdwB8PSaDDIWFxhoODM38AgtjwSnm8=";
+      hash = "sha256-3xn4WY/ZC9vdW1vCrruWqbkFnL8vt0DIdO/0uup8CVU=";
     };
     aarch64-linux = {
       platform = "manylinux_2_27_aarch64.manylinux_2_28_aarch64";
-      hash = "sha256-Iwrsm11jxJ8/G6Iow1p86VAHXOe3eAt4bIX6b7C+Pbs=";
+      hash = "sha256-xCMUdjG5ORmryly0qLXXCZcLyMH/B+dw7L3DnCtdSts=";
     };
   };
 in
 
 stdenv.mkDerivation (finalAttrs: {
   pname = "iree-compiler";
-  version = "3.13.0";
+  version = "3.14.0";
 
   src = fetchPypi {
     pname = "iree_base_compiler";
@@ -74,7 +74,7 @@ stdenv.mkDerivation (finalAttrs: {
     owner = "iree-org";
     repo = "iree";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-BnImem/CKSYKRZ9JIyq+VRGkYeCnHJEjcutGI4DevLY=";
+    hash = "sha256-aj3ZJ8TGUZZuEE8KcBkPOId6Hhkciwh7Wn1glg1b/co=";
   };
 
   doInstallCheck = true;
