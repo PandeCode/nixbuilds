@@ -38,11 +38,11 @@ let
   # only loads in a compiler at least as new as Xcode's own
   toolchain = stdenv.mkDerivation (finalAttrs: {
     pname = "swift-toolchain";
-    version = "6.4.2";
+    version = "6.4.3";
 
     src = fetchurl {
       url = "https://download.swift.org/swift-${finalAttrs.version}-release/ubuntu2404/swift-${finalAttrs.version}-RELEASE/swift-${finalAttrs.version}-RELEASE-ubuntu24.04.tar.gz";
-      hash = "sha256-Lp6+wECtRZ3Ymm0JOgLYMUk5E1EEhQ+uTVwPF0+zuow=";
+      hash = "sha256-lFbpW8v3OEnd5EyQ6UxuT3R/crNfcIket+qFYqKuogI=";
     };
 
     nativeBuildInputs = [ autoPatchelfHook ];
